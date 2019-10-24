@@ -33,7 +33,7 @@ public class ShoppingList {
 			order = Validator.getString(scan, "What item would you like to order? ");
 			if (items.contains(order)) {
 				orders.add(order);
-				System.out.println("Adding " + order + " to cart at " + prices.get(items.indexOf(order)));
+				System.out.printf("Adding " + order + " to cart at " + "$%.2f\n" , prices.get(items.indexOf(order)));
 			} else {
 				while(!items.contains(order)) {
 					System.out.println("Sorry, we don't have those.  Please try again.");
@@ -42,10 +42,10 @@ public class ShoppingList {
 					order = Validator.getString(scan, "What item would you like to order? ");
 				}
 				orders.add(order);
-				System.out.println("Adding " + order + " to cart at " + prices.get(items.indexOf(order)));
+				System.out.printf("Adding " + order + " to cart at "  + "$%.2f\n" , prices.get(items.indexOf(order)));
 			}
 
-			// your logic shoulds stop here if it doesn't need to be included in the loop
+			// your logic should stop here if it doesn't need to be included in the loop
 			System.out.println("Would you like to order anything else (y/n)");
 			cont = scan.nextLine();
 		}
@@ -53,7 +53,10 @@ public class ShoppingList {
 
 		//This is our indication that the program has ended
 		printReceipt(orders, prices, items);
-		System.out.printf("Average price per item in order was $" + "%.2f", getAverage(orders, prices, items));
+		System.out.println();
+		System.out.printf("Average price per item in order was " + "$%.2f", getAverage(orders, prices, items));
+		System.out.println("\nCheapest item: " + items.get(indexOfLowestItem(orders, prices, items)));
+		System.out.println("Most expensive item: " + items.get(indexOfHighestItem(orders, prices, items)));
 		scan.close();	
 
 	}
@@ -79,6 +82,26 @@ public class ShoppingList {
 			sum += prices.get(items.indexOf(item));
 		}
 		return sum / orders.size();
+	}
+	private static int indexOfLowestItem(ArrayList<String> orders, ArrayList<Double> prices, ArrayList<String> items) {
+		double max = 100.00;
+		for(String order : orders) {
+			double price = prices.get(items.indexOf(order));
+			if(price < max) {
+				max = price;
+			}
+		}
+		return prices.indexOf(max);
+	}
+	private static int indexOfHighestItem(ArrayList<String> orders, ArrayList<Double> prices, ArrayList<String> items) {
+		double max = 0.0;
+		for(String order : orders) {
+			double price = prices.get(items.indexOf(order));
+			if(price > max) {
+				max = price;
+			}
+		}
+		return prices.indexOf(max);
 	}
 
 }
